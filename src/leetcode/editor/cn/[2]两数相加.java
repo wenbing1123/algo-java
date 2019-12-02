@@ -31,50 +31,21 @@ class Solution {
 
         ListNode l3 = new ListNode(0);
         ListNode p = l3;
-        while (l1 != null && l2 != null) {
-            int r = l1.val + l2.val + p.val;
-            p.val = r % 10;
-            l1 = l1.next;
-            l2 = l2.next;
-            int j = r/10;
-            if (j>0) {
-                p.next = new ListNode(j);
-                p = p.next;
-            } else if (l1 != null || l2 != null) {
-                p.next = new ListNode(j);
-                p = p.next;
-            }
+        int carry = 0;
+        while (l1 != null || l2 != null || carry != 0) {
+            int a = l1 == null ? 0 : l1.val;
+            int b = l2 == null ? 0 : l2.val;
+            int r = a + b + carry;
+            carry = r / 10;
+
+            p.next = new ListNode(r % 10);
+            p = p.next;
+
+            if(l1 != null) l1 = l1.next;
+            if(l2 != null) l2 = l2.next;
         }
 
-        while (l1 != null) {
-            int r = l1.val + p.val;
-            p.val = r % 10;
-            l1 = l1.next;
-            int j = r/10;
-            if (j>0) {
-                p.next = new ListNode(j);
-                p = p.next;
-            } else if (l1 != null) {
-                p.next = new ListNode(j);
-                p = p.next;
-            }
-        }
-
-        while (l2 != null) {
-            int r = l2.val + p.val;
-            p.val = r % 10;
-            l2 = l2.next;
-            int j = r/10;
-            if (j>0) {
-                p.next = new ListNode(j);
-                p = p.next;
-            } else if (l2 != null) {
-                p.next = new ListNode(j);
-                p = p.next;
-            }
-        }
-
-        return l3;
+        return l3.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

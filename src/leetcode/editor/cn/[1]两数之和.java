@@ -16,7 +16,23 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        
+        if (nums == null || nums.length < 2) {
+            return null;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i<nums.length; i++) {
+            if (i != 0) {
+               Integer t = map.get(nums[i]);
+               if (t != null) {
+                    return new int[] {t, i};
+               }
+            }
+
+            map.put(target-nums[i], i);
+        }
+
+        return null;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

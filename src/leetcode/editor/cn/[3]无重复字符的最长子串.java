@@ -32,18 +32,25 @@ class Solution {
         }
 
         int res = 0;
+        int[] position = new int[256];
+        for(int i=0;i<position.length;i++)
+            position[i] = -1;
 
-        int[] a = new int[256];
+        int prevIndex = -1, currentLength = 0;
+        for (int i = 0; i< s.length(); i++) {
 
-        for (int i = 0; i < a.length; i++) {
-            a[i] = -1;
-        }
+            prevIndex = position[s.charAt(i)];
+            if (prevIndex < 0 || i - prevIndex > currentLength) {
+                currentLength ++;
+            } else {
+                currentLength = i - prevIndex;
+            }
 
-        int left = -1;
-        for (int i = 0; i < s.length(); i++) {
-            left = Math.max(left, a[s.charAt(i)]);
-            a[s.charAt(i)] = i;
-            res = Math.max(res, i - left);
+
+            position[s.charAt(i)] = i;
+            if (currentLength > res) {
+                res = currentLength;
+            }
         }
 
         return res;

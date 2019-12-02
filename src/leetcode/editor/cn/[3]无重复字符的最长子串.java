@@ -24,7 +24,6 @@
 // Related Topics 哈希表 双指针 字符串 Sliding Window
 
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
@@ -33,24 +32,18 @@ class Solution {
         }
 
         int res = 0;
-        for (int i=0; i<s.length(); i++) {
-            int iMax = 1;
-            for(int j = i+1; j<s.length(); j++) {
-                String t = s.substring(i, j);
-                boolean repeat = false;
-                for( int x = 0; x<t.length(); x++) {
-                    if (t.charAt(x) == s.charAt(j)) {
-                        repeat = true;
-                        break;
-                    }
-                }
-                if (!repeat) {
-                    iMax ++;
-                } else {
-                    break;
-                }
-            }
-            res = Math.max(res, iMax);
+
+        int[] a = new int[256];
+
+        for (int i = 0; i < a.length; i++) {
+            a[i] = -1;
+        }
+
+        int left = -1;
+        for (int i = 0; i < s.length(); i++) {
+            left = Math.max(left, a[s.charAt(i)]);
+            a[s.charAt(i)] = i;
+            res = Math.max(res, i - left);
         }
 
         return res;

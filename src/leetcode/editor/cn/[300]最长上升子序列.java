@@ -21,21 +21,31 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        return maxLIS(nums, Integer.MIN_VALUE, 0);
+        int[][] memo = new int[nums.length][nums.length];
+        for(int[] l : memo) {
+            Arrays.fill(l, -1);
+        }
+        return maxLIS(nums, -1, 0, memo);
     }
 
-    private int maxLIS(int[] nums, int prev, int curr) {
+    private int maxLIS(int[] nums, int prev, int curr, int[][] memo) {
         if (curr == nums.length) {
             return 0;
         }
 
-        int token = 0;
-        if (nums[curr] > prev) {
-            token = 1 + maxLIS(nums, nums[curr], curr+1);
+        if (memo[prev+1][curr] >= 0) {
+            return memo[prev+1][curr];
         }
 
-        int notoken = maxLIS(nums, prev, curr+1);
-        return Math.max(token, notoken);
+        int token = 0;
+        if (prev < 0 || nums[curr] > nums[prev]) {
+            token = 1 + maxLIS(nums, curr, curr+1, memo);
+        }
+
+        int notoken = maxLIS(nums, prev, curr+1, memo);
+        int max = Math.max(token, notoken);
+        memo[prev+1][curr] = max;
+        return max;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

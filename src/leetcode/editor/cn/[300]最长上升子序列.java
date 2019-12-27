@@ -17,35 +17,29 @@
 // Related Topics 二分查找 动态规划
 
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[][] memo = new int[nums.length][nums.length];
-        for(int[] l : memo) {
-            Arrays.fill(l, -1);
-        }
-        return maxLIS(nums, -1, 0, memo);
-    }
-
-    private int maxLIS(int[] nums, int prev, int curr, int[][] memo) {
-        if (curr == nums.length) {
+        if (nums.length == 0) {
             return 0;
         }
 
-        if (memo[prev+1][curr] >= 0) {
-            return memo[prev+1][curr];
+        int[] dp = new int[nums.length];
+        int ans = 1;
+        dp[0] = 1;
+        for (int i = 1; i < dp.length; i++) {
+            int maxVal = 0;
+            for (int j=0; j<i;j++) {
+                if (nums[i] > nums[j]) {
+                    maxVal = Math.max(maxVal, dp[j]);
+                }
+            }
+            dp[i] = maxVal + 1;
+            ans = Math.max(ans, dp[i]);
         }
 
-        int token = 0;
-        if (prev < 0 || nums[curr] > nums[prev]) {
-            token = 1 + maxLIS(nums, curr, curr+1, memo);
-        }
-
-        int notoken = maxLIS(nums, prev, curr+1, memo);
-        int max = Math.max(token, notoken);
-        memo[prev+1][curr] = max;
-        return max;
+        return ans;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)

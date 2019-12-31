@@ -22,20 +22,27 @@ class Solution {
         if ("".equals(s)) {
             return "";
         }
-        String res = s.substring(0, 1);
+
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        for(int i=0;i<dp.length;i++) {
+            Arrays.fill(dp[i], i, i+1, true);
+        }
+        int maxI=0, maxJ=0;
         for (int i=0; i<s.length()-1; i++) {
-            for(int j=i+1; j < s.length(); j++) {
-                String sub = s.substring(i, j+1);
-                if(isPalindrome(sub) && sub.length() > res.length()) {
-                    res = sub;
+            for (int j=i+1; j<s.length(); j++) {
+                if (isPalindrome(s, i+1, j-1) && s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = true;
+                    if (j-i > maxJ-maxI) {
+                        maxI = i;
+                        maxJ = j;
+                    }
                 }
             }
         }
-        return res;
+        return s.substring(maxI, maxJ+1);
     }
 
-    private boolean isPalindrome(String s) {
-        int i=0, j=s.length()-1;
+    private boolean isPalindrome(String s, int i, int j) {
         while (i <= j) {
             if (s.charAt(i) == s.charAt(j)) {
                 i++;

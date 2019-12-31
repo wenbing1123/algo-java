@@ -25,20 +25,18 @@ class Solution {
         }
 
         int[] dp = new int[nums.length];
-        int ans = 1;
-        dp[0] = 1;
-        for (int i = 1; i < dp.length; i++) {
-            int maxVal = 0;
-            for (int j=0; j<i;j++) {
-                if (nums[i] > nums[j]) {
-                    maxVal = Math.max(maxVal, dp[j]);
-                }
+        int len = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int j = Arrays.binarySearch(dp, 0, len, nums[i]);
+            if (j < 0) {
+                j = -(j+1);
             }
-            dp[i] = maxVal + 1;
-            ans = Math.max(ans, dp[i]);
+            dp[j] = nums[i];
+            if (j == len) {
+                len++;
+            }
         }
-
-        return ans;
+        return len;
     }
 
 }

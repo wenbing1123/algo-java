@@ -15,7 +15,6 @@
 // Related Topics 字符串 动态规划
 
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String longestPalindrome(String s) {
@@ -23,23 +22,33 @@ class Solution {
             return "";
         }
 
-        boolean[][] dp = new boolean[s.length()][s.length()];
-        for(int i=0;i<dp.length;i++) {
-            Arrays.fill(dp[i], i, i+1, true);
-        }
-        int maxI=0, maxJ=0;
-        for (int i=s.length()-2; i>=0; i--) {
-            for (int j=i+1; j<s.length(); j++) {
-                if ((j == i+1 || dp[i+1][j-1] == true) && s.charAt(i) == s.charAt(j)) {
-                    dp[i][j] = true;
-                    if (j-i > maxJ-maxI) {
-                        maxI = i;
-                        maxJ = j;
-                    }
+        int left = 0, right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int j = i, k = i, len = 1;
+            while (j - 1 >= 0 && k + 1 <= s.length() - 1 && s.charAt(j - 1) == s.charAt(k + 1)) {
+                j--;
+                k++;
+            }
+            if (k - j > right - left) {
+                left = j;
+                right = k;
+            }
+
+            if (i < s.length() - 1 && s.charAt(i) == s.charAt(i + 1)) {
+                j = i;
+                k = i + 1;
+                while (j - 1 >= 0 && k + 1 <= s.length() - 1 && s.charAt(j - 1) == s.charAt(k + 1)) {
+                    len++;
+                    j--;
+                    k++;
                 }
             }
+            if (k - j > right - left) {
+                left = j;
+                right = k;
+            }
         }
-        return s.substring(maxI, maxJ+1);
+        return s.substring(left, right + 1);
     }
 
 }

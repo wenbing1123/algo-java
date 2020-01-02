@@ -29,24 +29,37 @@ class Solution {
             return 0;
         }
 
-        if (needle.length() >= haystack.length() && !needle.equals(haystack)) {
+        int n = haystack.length(), m = needle.length();
+        if (m >= n && !needle.equals(haystack)) {
             return -1;
         }
 
-        int n = haystack.length(), m = needle.length();
+        int[] s_memo = new int[n - m + 1];
+        s_memo[0] = getHashcode(haystack.substring(0, m));
+        for (int i=1; i<n-m+1; i++) {
+            s_memo[i] = s_memo[i-1] - getHashcode(haystack.substring(i-1, i)) + getHashcode(haystack.substring(i+m-1, i+m));
+        }
 
-        for (int i = 0; i < n - m + 1; i++) {
-            int j = 0;
-            while (j < m && haystack.charAt(i + j) == needle.charAt(j)) {
-                j++;
-            }
-            if (j == m) {
-                return i;
+        int p_memo = getHashcode(needle);
+
+        for (int i = 0; i < s_memo.length; i++) {
+            if (s_memo[i] == p_memo) {
+                if (haystack.substring(i,i+m).equals(needle)) {
+                    return i;
+                }
             }
         }
 
         return -1;
     }
 
+    private int getHashcode(String s) {
+        int res = 0;
+        char[] c = s.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            res += c[i];
+        }
+        return res;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)

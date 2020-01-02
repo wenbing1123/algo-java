@@ -28,9 +28,9 @@ class Solution {
             Arrays.fill(dp[i], i, i+1, true);
         }
         int maxI=0, maxJ=0;
-        for (int i=0; i<s.length()-1; i++) {
+        for (int i=s.length()-2; i>=0; i--) {
             for (int j=i+1; j<s.length(); j++) {
-                if (isPalindrome(s, i+1, j-1) && s.charAt(i) == s.charAt(j)) {
+                if ((j == i+1 || dp[i+1][j-1] == true) && s.charAt(i) == s.charAt(j)) {
                     dp[i][j] = true;
                     if (j-i > maxJ-maxI) {
                         maxI = i;
@@ -40,18 +40,6 @@ class Solution {
             }
         }
         return s.substring(maxI, maxJ+1);
-    }
-
-    private boolean isPalindrome(String s, int i, int j) {
-        while (i <= j) {
-            if (s.charAt(i) == s.charAt(j)) {
-                i++;
-                j--;
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 
 }

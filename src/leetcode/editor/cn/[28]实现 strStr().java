@@ -34,32 +34,83 @@ class Solution {
             return -1;
         }
 
-        int[] s_memo = new int[n - m + 1];
-        s_memo[0] = getHashcode(haystack.substring(0, m));
-        for (int i=1; i<n-m+1; i++) {
-            s_memo[i] = s_memo[i-1] - getHashcode(haystack.substring(i-1, i)) + getHashcode(haystack.substring(i+m-1, i+m));
-        }
+        int[] bc = new int[256];
+        generateBC(needle, bc);
 
-        int p_memo = getHashcode(needle);
+        int[] suffix = new int[m];
+        boolean[] prefix = new boolean[m];
+        generateGS(needle, suffix, prefix);
 
-        for (int i = 0; i < s_memo.length; i++) {
-            if (s_memo[i] == p_memo) {
-                if (haystack.substring(i,i+m).equals(needle)) {
-                    return i;
+        int i = 0;
+        while (i <= n-m) {
+            int j;
+            for(j = m-1; j >= 0; j--) {
+                if (haystack.charAt(i+j) != needle.charAt(j)) {
+                    break;
                 }
             }
+            if (j < 0) {
+                return i;
+            }
+
+            int x = j - bc[haystack.charAt(i+j)];
+            int y = 0;
+            if (j < m-1) {
+                int k = m-1-j;
+                if(suffix[k] != -1) {
+                    y = j - suffix[k] +1;
+                } else {
+                    boolean f = true;
+                    for (int r=j+2;r<m-1;r++) {
+                        if (prefix[r] == true) {
+                            y = r;
+                            f = false;
+                            break;
+                        }
+                    }
+                    if(f) {
+                        y = m;
+                    }
+                }
+            }
+
+            i = i + Math.max(x, y);
         }
 
         return -1;
     }
 
-    private int getHashcode(String s) {
-        int res = 0;
-        char[] c = s.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            res += c[i];
+    private void generateBC(String p, int[] bc) {
+        for(int i=0;i<bc.length;i++) {
+            bc[i] = -1;
         }
-        return res;
+
+        for(int i=0;i<p.length();i++) {
+            bc[p.charAt(i)] = i;
+        }
     }
+
+    private void generateGS(String p, int[] suffix, boolean[] prefix) {
+        for(int i=0;i<suffix.length;i++) {
+            suffix[i] = -1;
+            prefix[i] = false;
+        }
+
+        char[] c = p.toCharArray();
+        for(int i=0;i<c.length-1; i++) {
+            int j=i;
+            int k=0;
+            while (j>0 && c[j] == c[c.length-1-k]) {
+                j--;
+                k++;
+                suffix[k] = j+1;
+            }
+            if(j == -1) {
+                prefix[k] = true;
+            }
+        }
+
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)

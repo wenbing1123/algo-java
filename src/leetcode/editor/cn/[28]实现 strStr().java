@@ -25,7 +25,7 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int strStr(String haystack, String needle) {
-        if ("".equals(haystack) && "".equals(needle)) {
+        if ("".equals(needle)) {
             return 0;
         }
 
@@ -34,82 +34,45 @@ class Solution {
             return -1;
         }
 
-        int[] bc = new int[256];
-        generateBC(needle, bc);
-
-        int[] suffix = new int[m];
-        boolean[] prefix = new boolean[m];
-        generateGS(needle, suffix, prefix);
+        int[] next = new int[m];
+        generateNext(needle, next);
 
         int i = 0;
         while (i <= n-m) {
             int j;
-            for(j = m-1; j >= 0; j--) {
+            for(j = 0; j < m; j++) {
                 if (haystack.charAt(i+j) != needle.charAt(j)) {
                     break;
                 }
             }
-            if (j < 0) {
+            if (j >= m) {
                 return i;
             }
 
-            int x = j - bc[haystack.charAt(i+j)];
-            int y = 0;
-            if (j < m-1) {
-                int k = m-1-j;
-                if(suffix[k] != -1) {
-                    y = j - suffix[k] +1;
-                } else {
-                    boolean f = true;
-                    for (int r=j+2;r<m-1;r++) {
-                        if (prefix[r] == true) {
-                            y = r;
-                            f = false;
-                            break;
-                        }
-                    }
-                    if(f) {
-                        y = m;
-                    }
-                }
+            if (j==0) {
+                i++;
+            } else {
+                i = i + (j - 1 - next[j-1]);
             }
 
-            i = i + Math.max(x, y);
         }
 
         return -1;
     }
 
-    private void generateBC(String p, int[] bc) {
-        for(int i=0;i<bc.length;i++) {
-            bc[i] = -1;
-        }
-
-        for(int i=0;i<p.length();i++) {
-            bc[p.charAt(i)] = i;
-        }
-    }
-
-    private void generateGS(String p, int[] suffix, boolean[] prefix) {
-        for(int i=0;i<suffix.length;i++) {
-            suffix[i] = -1;
-            prefix[i] = false;
-        }
-
+    private void generateNext(String p, int[] next) {
+        next[0] = -1;
+        int k = -1;
         char[] c = p.toCharArray();
-        for(int i=0;i<c.length-1; i++) {
-            int j=i;
-            int k=0;
-            while (j>0 && c[j] == c[c.length-1-k]) {
-                j--;
+        for(int i=1;i<c.length;i++) {
+            while (k != -1 && c[k+1] != c[i]) {
+                k = next[k];
+            }
+            if (c[k+1] == c[i]) {
                 k++;
-                suffix[k] = j+1;
             }
-            if(j == -1) {
-                prefix[k] = true;
-            }
+            next[i] = k;
         }
-
     }
 
 }

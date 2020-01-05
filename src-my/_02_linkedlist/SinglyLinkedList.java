@@ -132,26 +132,26 @@ public class SinglyLinkedList {
 
         Node f = head;
         int pos = 1;
-        while (f.next != null || pos < k) {
+        while (f != null && pos < k) {
             f = f.next;
             pos++;
         }
 
-        if (f.next == null) {
+        if (f == null) {
             return;
         }
 
         Node l = head, prev = null;
         while (f.next != null) {
             f = f.next;
-            l = l.next;
             prev = l;
+            l = l.next;
         }
 
         if (prev == null) {
-            l = l.next;
+            head = head.next;
         } else {
-            l = l.next.next;
+            prev.next = prev.next.next;
         }
     }
 

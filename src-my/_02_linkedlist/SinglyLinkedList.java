@@ -206,6 +206,31 @@ public class SinglyLinkedList {
         return false;
     }
 
+    public Node mergeTwoLists(Node l1, Node l2) {
+        Node s = createNode(0); //利用哨兵节点简化难度
+        Node p = s;
+        while (l1 != null && l2 != null) {
+            if (l1.data <= l2.data) {
+                p.next = l1;
+                l1 = l1.next;
+            } else {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+
+        if(l1 != null) {
+            p.next = l1;
+        }
+
+        if (l2 != null) {
+            p.next = l2;
+        }
+
+        return s.next;
+    }
+
     public void printAll() {
         Node p = head;
         while (p != null) {
@@ -220,7 +245,7 @@ public class SinglyLinkedList {
     }
 
     public static void main(String[] args) {
-        SinglyLinkedList link = new SinglyLinkedList();
+        var link = new SinglyLinkedList();
         System.out.println("hello");
         int data[] = {1,2,5,3,1};
         for(int i =0; i < data.length; i++){
@@ -232,5 +257,25 @@ public class SinglyLinkedList {
         link.printAll();
         link.deleteLastKth(2);
         link.printAll();
+
+        var l1 = new SinglyLinkedList();
+        int d1[] = {1,2,5};
+        for(int i =0; i < d1.length; i++){
+            l1.insertToTail(d1[i]);
+        }
+
+        var l2 = new SinglyLinkedList();
+        int d2[] = {2,3,6};
+        for(int i =0; i < d2.length; i++){
+            l2.insertToTail(d2[i]);
+        }
+
+        Node p = link.mergeTwoLists(l1.head, l2.head);
+        while (p != null) {
+            System.out.print(p.data + " ");
+            p = p.next;
+        }
+        System.out.println();
     }
 }
+

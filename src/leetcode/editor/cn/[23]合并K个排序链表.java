@@ -24,22 +24,22 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) {
+            return null;
+        }
+
         if (lists.length == 1) {
             return lists[0];
         }
 
-        return merge(lists, 0, lists.length-1);
-    }
-
-    private ListNode merge(ListNode[] lists, int left, int right) {
-        if (left >= right-1) {
-            return merge(lists[left], lists[right]);
+        int interval = 1;
+        while (interval < lists.length) {
+            for (int i=0; i<lists.length-interval; i=i+interval*2) {
+                lists[i] = merge(lists[i], lists[i+interval]);
+            }
+            interval*=2;
         }
-
-        int mid = (left + right) >> 2;
-        ListNode l1 = merge(lists, left, mid);
-        ListNode l2 = merge(lists, mid+1, right);
-        return merge(l1, l2);
+        return lists[0];
     }
 
     private ListNode merge(ListNode l1, ListNode l2) {

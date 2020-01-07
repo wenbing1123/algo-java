@@ -44,7 +44,41 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isValid(String s) {
-        
+        if ("".equals(s)) {
+            return true;
+        }
+        if (s.length() == 1) {
+            return false;
+        }
+
+        Stack<Character> stack = new Stack<>();
+        char[] c = s.toCharArray();
+        stack.push(c[0]);
+        for(int i=1;i<c.length;i++) {
+            if (isClose(c[i]) && (stack.empty() || !match(stack.pop(), c[i]))) {
+                return false;
+            }
+
+            if (!isClose(c[i])) {
+                stack.push(c[i]);
+            }
+        }
+
+        if (stack.empty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isClose(char c) {
+        return c == ')' || c == ']' || c == '}';
+    }
+
+    private boolean match(char a, char b) {
+        if ((a == '(' && b == ')') || (a == '[' && b == ']') || (a == '{' && b == '}')) {
+            return true;
+        }
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

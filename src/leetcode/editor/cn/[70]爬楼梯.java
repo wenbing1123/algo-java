@@ -30,16 +30,6 @@ class Solution {
 
 
     public int climbStairs(int n) {
-        int[] memo = new int[n];
-        return f(n, memo);
-    }
-
-    private int f(int n, int[] memo) {
-
-        if (memo[n-1] != 0) {
-            return memo[n-1];
-        }
-
         if (n == 1) {
             return 1;
         }
@@ -47,9 +37,15 @@ class Solution {
             return 2;
         }
 
-        int v = f(n-1, memo) + f(n-2, memo);
-        memo[n-1] = v;
-        return v;
+        int prev=2, prevPrev=1;
+        for (int i=3; i<=n; i++) {
+            int curr = prev + prevPrev;
+            prevPrev = prev;
+            prev = curr;
+        }
+
+        return prev;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)

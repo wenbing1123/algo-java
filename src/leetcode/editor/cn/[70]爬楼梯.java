@@ -27,7 +27,19 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
+
     public int climbStairs(int n) {
+        int[] memo = new int[n];
+        return f(n, memo);
+    }
+
+    private int f(int n, int[] memo) {
+
+        if (memo[n-1] != 0) {
+            return memo[n-1];
+        }
+
         if (n == 1) {
             return 1;
         }
@@ -35,8 +47,9 @@ class Solution {
             return 2;
         }
 
-        return climbStairs(n-1) + climbStairs(n-2);
+        int v = f(n-1, memo) + f(n-2, memo);
+        memo[n-1] = v;
+        return v;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)

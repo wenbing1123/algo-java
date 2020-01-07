@@ -39,54 +39,104 @@
 // Related Topics 设计 队列
 
 
-
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class MyCircularDeque {
 
-    /** Initialize your data structure here. Set the size of the deque to be k. */
+    private int[] items;
+    private int head;
+    private int tail;
+
+    /**
+     * Initialize your data structure here. Set the size of the deque to be k.
+     */
     public MyCircularDeque(int k) {
-        
+        this.items = new int[k + 1];
+        this.head = 0;
+        this.tail = 0;
     }
-    
-    /** Adds an item at the front of Deque. Return true if the operation is successful. */
+
+    /**
+     * Adds an item at the front of Deque. Return true if the operation is successful.
+     */
     public boolean insertFront(int value) {
-        
+        if (isFull()) {
+            return false;
+        }
+
+        head = (head+items.length-1)%items.length;
+        items[head] = value;
+        return true;
     }
-    
-    /** Adds an item at the rear of Deque. Return true if the operation is successful. */
+
+    /**
+     * Adds an item at the rear of Deque. Return true if the operation is successful.
+     */
     public boolean insertLast(int value) {
-        
+        if (isFull()) {
+            return false;
+        }
+
+        items[tail] = value;
+        tail = (tail+1)%items.length;
+        return true;
     }
-    
-    /** Deletes an item from the front of Deque. Return true if the operation is successful. */
+
+    /**
+     * Deletes an item from the front of Deque. Return true if the operation is successful.
+     */
     public boolean deleteFront() {
-        
+        if (isEmpty()) {
+            return false;
+        }
+
+        head = (head+1)%items.length;
+        return true;
     }
-    
-    /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
+
+    /**
+     * Deletes an item from the rear of Deque. Return true if the operation is successful.
+     */
     public boolean deleteLast() {
-        
+        if (isEmpty()) {
+            return false;
+        }
+
+        tail = (tail+items.length-1)%items.length;
+        return true;
     }
-    
-    /** Get the front item from the deque. */
+
+    /**
+     * Get the front item from the deque.
+     */
     public int getFront() {
-        
+        if (isEmpty()) {
+            return -1;
+        }
+        return items[head];
     }
-    
-    /** Get the last item from the deque. */
+
+    /**
+     * Get the last item from the deque.
+     */
     public int getRear() {
-        
+        if (isEmpty()) {
+            return -1;
+        }
+        return items[(tail+items.length-1)%items.length];
     }
-    
-    /** Checks whether the circular deque is empty or not. */
+
+    /**
+     * Checks whether the circular deque is empty or not.
+     */
     public boolean isEmpty() {
-        
+        return this.head == this.tail;
     }
-    
-    /** Checks whether the circular deque is full or not. */
+
+    /**
+     * Checks whether the circular deque is full or not.
+     */
     public boolean isFull() {
-        
+        return (this.tail + 1) % items.length == this.head;
     }
 }
 

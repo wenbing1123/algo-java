@@ -20,20 +20,35 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int longestValidParentheses(String s) {
-        int res = 0;
-        Stack<Integer> stack = new Stack<>();
-        stack.push(-1);
-        for(int i=0; i<s.length();i++) {
+        int res=0, left=0, right=0;
+
+        for(int i=0; i<s.length(); i++) {
             char c = s.charAt(i);
             if (c == '(') {
-                stack.push(i);
+                left++;
             } else {
-                stack.pop();
-                if(stack.empty()) {
-                    stack.push(i);
-                } else {
-                    res = Math.max(res, i - stack.peek());
-                }
+                right++;
+            }
+
+            if (left==right) {
+                res = Math.max(res, 2*right);
+            } else if(right>=left) {
+                left=right=0;
+            }
+        }
+
+        left=right=0;
+        for(int i=s.length()-1; i>=0; i--) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left==right) {
+                res = Math.max(res, 2*left);
+            } else if(left>=right) {
+                left=right=0;
             }
         }
 

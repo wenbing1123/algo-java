@@ -2,16 +2,9 @@ package _05_sort;
 
 import java.util.Arrays;
 
-public class DoublePivotQuickSort {
+import static _00_utils.Utils.swap;
 
-    private static void swap(int[] nums, int i, int j) {
-        if (i == j) {
-            return;
-        }
-        int tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
-    }
+public class DoublePivotQuickSort {
 
     public static void quickSort(int[] nums, int left, int right) {
         if (left >= right) {

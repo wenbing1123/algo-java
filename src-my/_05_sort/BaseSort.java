@@ -2,16 +2,9 @@ package _05_sort;
 
 import java.util.Arrays;
 
-public class BaseSort {
+import static _00_utils.Utils.swap;
 
-    private static void swap(int[] nums, int i, int j) {
-        if (i == j) {
-            return;
-        }
-        int tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
-    }
+public class BaseSort {
 
     public static void bubbleSort(int[] nums) {
         for (int i = 0; i < nums.length; i++) {

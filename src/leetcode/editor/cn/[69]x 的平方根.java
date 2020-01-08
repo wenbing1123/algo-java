@@ -23,12 +23,17 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public int mySqrt(int a) {
-        long x = a;
-        while (x * x > a) {
-            x = (x + a / x) / 2;
+    public int mySqrt(int x) {
+        long left = 0, right = x/2+1;
+        while (left < right) {
+            long mid = (left+right+1) >>> 1;
+            if (mid*mid > x) {
+                right = mid-1;
+            } else {
+                left = mid;
+            }
         }
-        return (int) x;
+        return (int) left;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

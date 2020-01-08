@@ -35,7 +35,7 @@ public class QuickSort {
     public static void main(String[] args) {
         int[] nums = new int[]{4,3,2,2,1};
         quickSort(nums, 0, nums.length-1);
-        assert Arrays.equals(new int[]{1,2,3,4}, nums);
+        assert Arrays.equals(new int[]{1,2,2,3,4}, nums);
 
         int[] arr4 = new int[] {4, 3, 1, 2};
         quickSort(arr4, 0, arr4.length-1);

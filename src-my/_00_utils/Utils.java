@@ -13,6 +13,15 @@ public class Utils {
         nums[j] = tmp;
     }
 
+    public static  void swap(Object[] nums, int i, int j) {
+        if (i == j) {
+            return;
+        }
+        Object tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
     public static int[] randomNums() {
        return randomNums(6, 10);
     }

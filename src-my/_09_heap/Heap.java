@@ -38,7 +38,7 @@ public abstract class Heap {
         return right < count ? right : -1;
     }
 
-    protected void shiftUp(int i) {
+    protected void siftUp(int i) {
         int p = getParent(i);
         while (p > -1 && ((max && data[p] < data[i]) || (!max && data[p] > data[i]))) {
             swap(data, i, p);
@@ -47,11 +47,11 @@ public abstract class Heap {
         }
     }
 
-    protected void shiftDown(int i) {
-        shiftDown(i, count);
+    protected void siftDown(int i) {
+        siftDown(i, count);
     }
 
-    protected void shiftDown(int i, int k) {
+    protected void siftDown(int i, int k) {
         int targetI = i;
         while (true) {
             int l = getLeft(i), r = getRight(i);
@@ -72,7 +72,7 @@ public abstract class Heap {
     public void heapify() {
         int i = count/2 - 1;
         for (; i>=0; i--) {
-            shiftDown(i);
+            siftDown(i);
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class Heap {
             return;
         }
         data[count] = value;
-        shiftUp(count);
+        siftUp(count);
         count++;
     }
 
@@ -92,15 +92,16 @@ public abstract class Heap {
 
         for(int i=count-1; i>=0; i--) {
             swap(data, 0, i);
-            shiftDown(0, i);
+            siftDown(0, i);
         }
     }
 
     public int pop() {
         if (count > 0) {
             int value = data[0];
-            swap(data, 0, count);
-            shiftDown(0);
+            swap(data, 0, count-1);
+            count--;
+            siftDown(0);
             return value;
         }
         return -1;

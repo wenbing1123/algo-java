@@ -1,7 +1,5 @@
 package _09_heap;
 
-import java.util.Random;
-
 import static _00_utils.Utils.randomNums;
 
 public class MaxHeap extends Heap{
@@ -16,6 +14,8 @@ public class MaxHeap extends Heap{
 
     public static void main(String[] args) {
         var heap = new MaxHeap(new int[] {1,2,3,4,5,6,7});
+        heap.printAll();
+        System.out.println(heap.pop());
         heap.printAll();
 
         var heap1 = new MaxHeap(10);

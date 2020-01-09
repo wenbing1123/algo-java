@@ -126,25 +126,76 @@ public class MyBinaryTree {
     }
 
     public Node findPrev(int value) {
-        return null;
+        Node p = find(value);
+        Node prev = null;
+        if (p != null && p.left != null) {
+            prev = p.left;
+            while (prev.right != null) {
+                prev = prev.right;
+            }
+        }
+        return prev;
     }
 
-    private Node findNext(int value) {
-        return null;
+    public Node findNext(int value) {
+        Node p = find(value);
+        Node next = null;
+        if (p != null && p.right != null) {
+            next = p.right;
+            while (next.left != null) {
+                next = next.left;
+            }
+        }
+        return next;
     }
 
-    private void printAll() {
-        print(root);
+    public void print() {
+
+    }
+
+    public void preOrder() {
+        preOrder(root);
         System.out.println();
     }
 
-    private void print(Node node) {
+    public void preOrder(Node node) {
         if (node == null) {
             return;
         }
-        print(node.left);
+
         System.out.print(" " + node.value + " ");
-        print(node.right);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    public void inOrder() {
+        inOrder(root);
+        System.out.println();
+    }
+
+    public void inOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        inOrder(node.left);
+        System.out.print(" " + node.value + " ");
+        inOrder(node.right);
+    }
+
+    public void postOrder() {
+        postOrder(root);
+        System.out.println();
+    }
+
+    public void postOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.print(" " + node.value + " ");
     }
 
     public static void main(String[] args) {
@@ -156,6 +207,14 @@ public class MyBinaryTree {
         tree.insert(8);
         tree.insert(1);
         tree.insert(2);
-        tree.printAll();
+        tree.preOrder();
+        tree.inOrder();
+        tree.postOrder();
+
+        System.out.println("max=" + tree.findMax().value);
+        System.out.println("min=" + tree.findMin().value);
+        System.out.println("prev=" + tree.findPrev(5).value);
+        System.out.println("next=" + tree.findNext(5).value);
+
     }
 }

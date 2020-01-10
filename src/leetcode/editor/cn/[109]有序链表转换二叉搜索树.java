@@ -37,8 +37,35 @@
  * }
  */
 class Solution {
+
+    private ListNode p;
+
     public TreeNode sortedListToBST(ListNode head) {
-        
+        int size = getSize(head);
+        p = head;
+        return recur(0, size-1);
+    }
+
+    private int getSize(ListNode head) {
+        int c = 0;
+        while (head != null) {
+            c++;
+            head = head.next;
+        }
+        return c;
+    }
+
+    private TreeNode recur(int l, int r) {
+        if (l > r) return null;
+        int mid = (l+r)>>>1;
+        TreeNode left = recur(l, mid-1);
+
+        TreeNode node = new TreeNode(p.val);
+        node.left = left;
+
+        p = p.next;
+        node.right = recur(mid+1, r);
+        return node;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

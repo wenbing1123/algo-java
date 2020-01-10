@@ -31,6 +31,31 @@
  */
 class Solution {
     public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return false;
+        }
+
+        Stack<TreeNode> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        s1.push(root);
+        s2.push(sum - root.val);
+        int currNum;
+        while (!s1.empty()) {
+            TreeNode p = s1.pop();
+            currNum = s2.pop();
+            if (p.left==null && p.right==null && currNum==0) return true;
+
+            if (p.right != null) {
+                s1.push(p.right);
+                s2.push(currNum-p.right.val);
+            }
+
+            if (p.left != null) {
+                s1.push(p.left);
+                s2.push(currNum-p.left.val);
+            }
+        }
+
         return false;
     }
 }

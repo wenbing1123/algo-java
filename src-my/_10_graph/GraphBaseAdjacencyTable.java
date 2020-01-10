@@ -1,10 +1,7 @@
 package _10_graph;
 
-import _04_queue.ArrayQueue;
-
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 public class GraphBaseAdjacencyTable {
 

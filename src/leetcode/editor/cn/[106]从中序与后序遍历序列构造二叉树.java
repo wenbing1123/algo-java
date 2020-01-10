@@ -19,20 +19,47 @@
 // Related Topics 树 深度优先搜索 数组
 
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode(int x) { val = x; }
  * }
  */
 class Solution {
+
+    private int[] postorder;
+    private int i;
+    private HashMap<Integer, Integer> inorderMap;
+
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        
+        this.postorder = postorder;
+        this.i = postorder.length-1;
+        this.inorderMap = buildMap(inorder);
+        return recur(inorder, 0, inorder.length - 1);
     }
+
+    private TreeNode recur(int[] inorder, int l, int r) {
+        if (l > r) return null;
+        int s = inorderMap.get(postorder[i]);
+        TreeNode root = new TreeNode(postorder[i]);
+        i--;
+        root.right = recur(inorder, s + 1, r);
+        root.left = recur(inorder, l, s - 1);
+        return root;
+    }
+
+    private HashMap<Integer, Integer> buildMap(int[] inorder) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
+        }
+        return map;
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)

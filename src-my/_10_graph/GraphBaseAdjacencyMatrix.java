@@ -34,11 +34,7 @@ public class GraphBaseAdjacencyMatrix<E> {
     }
 
     public void addEdge(int from, int to) {
-        edges[from][to] = 1;
-        if(!digraph) {
-            edges[to][from] = 1;
-        }
-        edgeCount++;
+        addEdge(from, to, 1);
     }
 
     public void removeEdge(int from, int to) {

@@ -45,18 +45,21 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return recur(root, null, null);
-    }
+        Stack<TreeNode> stack = new Stack<> ();
+        double min = -Double.MAX_VALUE;
 
-    private boolean recur(TreeNode node, Integer min, Integer max) {
-        if (node == null) return true;
-        int val = node.val;
-        if (min != null && val <= min) return false;
-        if (max != null && val >= max) return false;
+        while (!stack.empty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (root.val <= min) return false;
+            min = root.val;
+            root = root.right;
+        }
 
-        boolean l = recur(node.left, min, val);
-        boolean r = recur(node.right, val, max);
-        return l==true && r==true ? true : false;
+        return true;
     }
 
 }

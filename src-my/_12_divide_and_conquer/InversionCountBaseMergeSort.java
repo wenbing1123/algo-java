@@ -4,18 +4,17 @@ import java.util.Arrays;
 
 public class InversionCountBaseMergeSort {
 
-    private int inversionCount = 0;
-
-    private void mergeCount(int[] nums, int l, int r) {
-        if (l >= r) return;
+    private int mergeCount(int[] nums, int l, int r) {
+        if (l >= r) return 0;
         int mid = (l + r) >>> 1;
-        mergeCount(nums, l, mid);
-        mergeCount(nums, mid + 1, r);
-        merge(nums, l, mid, r);
+        int a = mergeCount(nums, l, mid);
+        int b = mergeCount(nums, mid + 1, r);
+        int c = merge(nums, l, mid, r);
+        return a+b+c;
     }
 
-    private void merge(int[] nums, int l, int mid, int r) {
-        int i = l, j = mid + 1, k = 0;
+    private int merge(int[] nums, int l, int mid, int r) {
+        int i = l, j = mid + 1, k = 0, count=0;
         int[] tmp = new int[r - l + 1];
         while (i <= mid && j <= r) {
             if (nums[i] <= nums[j]) {
@@ -26,6 +25,7 @@ public class InversionCountBaseMergeSort {
                 tmp[k] = nums[j];
                 k++;
                 j++;
+                count += (mid-i+1);
             }
         }
 
@@ -45,14 +45,15 @@ public class InversionCountBaseMergeSort {
             nums[i + l] = tmp[i];
         }
 
+        return count;
     }
 
     public static void main(String[] args) {
         InversionCountBaseMergeSort bean = new InversionCountBaseMergeSort();
-        int[] nums = new int[]{5, 0, 4, 2, 3, 1, 3, 3, 3, 6, 8, 7};
-        bean.mergeCount(nums, 0, nums.length - 1);
+        int[] nums = new int[]{1,5,6,2,3,4};
+        int inversionCount = bean.mergeCount(nums, 0, nums.length - 1);
         System.out.println(Arrays.toString(nums));
-        System.out.println("inversionCount:" + bean.inversionCount);
+        System.out.println("inversionCount:" + inversionCount);
     }
 
 }

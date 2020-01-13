@@ -62,35 +62,38 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        HashMap<Integer, Integer>[] rows = new HashMap[9];
-        HashMap<Integer, Integer>[] cols = new HashMap[9];
-        HashMap<Integer, Integer>[] boxes = new HashMap[9];
+        for (int i = 0; i < board.length; i++) {
+            int hori = 0, veti = 0, sqre = 0;
+            for (int j = 0; j < board[i].length; j++) {
+                // 由于传入为char，需要转换为int，减48
+                int h = board[i][j] - 48;
+                int v = board[j][i] - 48;
+                int s = board[3 * (i / 3) + j / 3][3 * (i % 3) + j % 3] - 48;
 
-        for (int i=0; i<9; i++) {
-            rows[i] = new HashMap<>();
-            cols[i] = new HashMap<>();
-            boxes[i] = new HashMap<>();
-        }
+                if (h > 0) {
+                    hori = sodokuer(h, hori);
+                }
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                char num = board[i][j];
-                if (num != '.') {
-                    int n = (int) num;
-                    int k = (i / 3 ) * 3 + j / 3;
+                if (v > 0) {
+                    veti = sodokuer(v, veti);
+                }
 
-                    rows[i].put(n, rows[i].getOrDefault(n, 0) + 1);
-                    cols[j].put(n, cols[j].getOrDefault(n, 0) + 1);
-                    boxes[k].put(n, boxes[k].getOrDefault(n, 0) + 1);
+                if (s > 0) {
+                    sqre = sodokuer(s, sqre);
+                }
 
-                    if (rows[i].get(n) > 1 || cols[j].get(n) > 1 || boxes[k].get(n) > 1) {
-                        return false;
-                    }
+                if(hori == -1 || veti == -1 || sqre == -1){
+                    return false;
                 }
             }
         }
 
         return true;
+    }
+
+    // 判断数是否重复
+    private int sodokuer(int n, int val){
+        return ((val >> n) & 1) == 1 ? -1 : val ^ (1 << n);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

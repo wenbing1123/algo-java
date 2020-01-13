@@ -24,7 +24,6 @@
 // Related Topics 深度优先搜索 广度优先搜索 并查集
 
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 
@@ -33,6 +32,7 @@ class Solution {
             return 0;
         }
 
+        Queue<Integer> neighbors = new LinkedList<>();
         int m = grid.length;
         int n = grid[0].length;
         int res = 0;
@@ -41,25 +41,33 @@ class Solution {
                 char c = grid[i][j];
                 if (c == '1') {
                     res++;
-                    dfs(grid, i, j);
+                    grid[i][j] = '0';
+                    neighbors.add(i*n+j);
+                    while (!neighbors.isEmpty()) {
+                        int id = neighbors.poll();
+                        int row = id / n;
+                        int col = id % n;
+                        if (row - 1 >= 0 && grid[row - 1][col] == '1') {
+                            neighbors.add((row - 1) * n + col);
+                            grid[row - 1][col] = '0';
+                        }
+                        if (row + 1 < m && grid[row + 1][col] == '1') {
+                            neighbors.add((row + 1) * n + col);
+                            grid[row + 1][col] = '0';
+                        }
+                        if (col - 1 >= 0 && grid[row][col - 1] == '1') {
+                            neighbors.add(row * n + col - 1);
+                            grid[row][col - 1] = '0';
+                        }
+                        if (col + 1 < n && grid[row][col + 1] == '1') {
+                            neighbors.add(row * n + col + 1);
+                            grid[row][col + 1] = '0';
+                        }
+                    }
                 }
             }
         }
         return res;
-    }
-
-    private void dfs(char[][] grid, int i, int j) {
-        int m = grid.length;
-        int n = grid[0].length;
-        if (i<0 || i>=m || j<0 || j>=n || grid[i][j] == '0') {
-            return;
-        }
-
-        grid[i][j] = '0';
-        dfs(grid, i-1, j);
-        dfs(grid, i, j-1);
-        dfs(grid, i+1, j);
-        dfs(grid, i, j+1);
     }
 
 }

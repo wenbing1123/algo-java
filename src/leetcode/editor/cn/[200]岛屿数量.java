@@ -32,43 +32,79 @@ class Solution {
             return 0;
         }
 
-        Queue<Integer> neighbors = new LinkedList<>();
         int m = grid.length;
         int n = grid[0].length;
-        int res = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                char c = grid[i][j];
-                if (c == '1') {
-                    res++;
-                    grid[i][j] = '0';
-                    neighbors.add(i*n+j);
-                    while (!neighbors.isEmpty()) {
-                        int id = neighbors.poll();
-                        int row = id / n;
-                        int col = id % n;
-                        if (row - 1 >= 0 && grid[row - 1][col] == '1') {
-                            neighbors.add((row - 1) * n + col);
-                            grid[row - 1][col] = '0';
-                        }
-                        if (row + 1 < m && grid[row + 1][col] == '1') {
-                            neighbors.add((row + 1) * n + col);
-                            grid[row + 1][col] = '0';
-                        }
-                        if (col - 1 >= 0 && grid[row][col - 1] == '1') {
-                            neighbors.add(row * n + col - 1);
-                            grid[row][col - 1] = '0';
-                        }
-                        if (col + 1 < n && grid[row][col + 1] == '1') {
-                            neighbors.add(row * n + col + 1);
-                            grid[row][col + 1] = '0';
-                        }
+        int num_islands = 0;
+        UnionFind uf = new UnionFind(grid);
+        for (int r = 0; r < m; ++r) {
+            for (int c = 0; c < n; ++c) {
+                if (grid[r][c] == '1') {
+                    grid[r][c] = '0';
+                    if (r - 1 >= 0 && grid[r - 1][c] == '1') {
+                        uf.union(r * n + c, (r - 1) * n + c);
+                    }
+                    if (r + 1 < m && grid[r + 1][c] == '1') {
+                        uf.union(r * n + c, (r + 1) * n + c);
+                    }
+                    if (c - 1 >= 0 && grid[r][c - 1] == '1') {
+                        uf.union(r * n + c, r * n + c - 1);
+                    }
+                    if (c + 1 < n && grid[r][c + 1] == '1') {
+                        uf.union(r * n + c, r * n + c + 1);
                     }
                 }
             }
         }
-        return res;
+
+        return uf.getCount();
     }
 
+    class UnionFind {
+        int count; // # of connected components
+        int[] parent;
+        int[] rank;
+
+        public UnionFind(char[][] grid) { // for problem 200
+            count = 0;
+            int m = grid.length;
+            int n = grid[0].length;
+            parent = new int[m * n];
+            rank = new int[m * n];
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (grid[i][j] == '1') {
+                        parent[i * n + j] = i * n + j;
+                        ++count;
+                    }
+                    rank[i * n + j] = 0;
+                }
+            }
+        }
+
+        public int find(int i) { // path compression
+            if (parent[i] != i) parent[i] = find(parent[i]);
+            return parent[i];
+        }
+
+        public void union(int x, int y) { // union with rank
+            int rootx = find(x);
+            int rooty = find(y);
+            if (rootx != rooty) {
+                if (rank[rootx] > rank[rooty]) {
+                    parent[rooty] = rootx;
+                } else if (rank[rootx] < rank[rooty]) {
+                    parent[rootx] = rooty;
+                } else {
+                    parent[rooty] = rootx;
+                    rank[rootx] += 1;
+                }
+                --count;
+            }
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)

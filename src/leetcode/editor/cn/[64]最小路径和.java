@@ -20,7 +20,27 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minPathSum(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] table = new int[m][n];
 
+        int sum=0;
+        for(int i=0; i<m; i++) {
+            sum += grid[i][0];
+            table[i][0] = sum;
+        }
+        sum=0;
+        for(int i=0; i<n ;i++) {
+            sum += grid[0][i];
+            table[0][i]=sum;
+        }
+
+        for(int i=1; i<m; i++) {
+            for (int j=1;j<n;j++) {
+                table[i][j] = grid[i][j] + Math.min(table[i-1][j], table[i][j-1]);
+            }
+        }
+
+        return table[m-1][n-1];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

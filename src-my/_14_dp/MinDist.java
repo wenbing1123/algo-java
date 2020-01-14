@@ -12,13 +12,13 @@ public class MinDist {
 
         int sum=0;
         for(int i=0; i<m; i++) {
-            table[i][0] = sum;
             sum += weights[i][0];
+            table[i][0] = sum;
         }
         sum=0;
         for(int i=0; i<n ;i++) {
-            table[0][i]=sum;
             sum += weights[0][i];
+            table[0][i]=sum;
         }
 
         for(int i=1; i<m; i++) {

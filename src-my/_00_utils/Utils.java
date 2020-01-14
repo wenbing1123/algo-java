@@ -13,7 +13,7 @@ public class Utils {
         nums[j] = tmp;
     }
 
-    public static  void swap(Object[] nums, int i, int j) {
+    public static void swap(Object[] nums, int i, int j) {
         if (i == j) {
             return;
         }
@@ -22,8 +22,16 @@ public class Utils {
         nums[j] = tmp;
     }
 
+    public static int min(int a, int b, int c) {
+        return Math.min(Math.min(a, b), c);
+    }
+
+    public static int max(int a, int b, int c) {
+        return Math.max(Math.max(a, b), c);
+    }
+
     public static int[] randomNums() {
-       return randomNums(6, 10);
+        return randomNums(6, 10);
     }
 
     public static int[] randomNums(int count) {

@@ -20,20 +20,19 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        if (amount<=0) return -1;
+        if (amount==0) return 0;
 
-        Arrays.sort(coins);
-        int rem = amount, count=0;
-        while (rem>0) {
-            for(int i=coins.length-1; i>=0; i--) {
-                if (rem >= coins[i]) {
-                    rem -= coins[i];
-                    count++;
-                    break;
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, amount+1);
+        dp[0]=0;
+        for(int i=1; i<=amount; i++) {
+            for(int j=0;j<coins.length;j++) {
+                if(coins[j]<=i) {
+                    dp[i] = Math.min(dp[i], dp[i-coins[j]]+1);
                 }
             }
         }
-        return count == 0 ? -1 : count;
+        return dp[amount] > amount ? -1 : dp[amount];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

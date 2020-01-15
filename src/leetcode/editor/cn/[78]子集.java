@@ -22,8 +22,22 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public List<List<Integer>> subsets(int[] nums) {
 
+    private List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> subsets(int[] nums) {
+        backtrack(nums, 0, new LinkedList<>());
+        return res;
     }
+
+    private void backtrack(int[] nums, int curr, LinkedList<Integer> list) {
+        res.add(new ArrayList<>(list));
+        for(int i=curr; i<nums.length;i++) {
+            list.add(nums[i]);
+            backtrack(nums, i+1, list);
+            list.removeLast();
+        }
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
